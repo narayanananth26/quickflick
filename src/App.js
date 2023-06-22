@@ -260,6 +260,10 @@ function MovieDetails({ selectedId, onCloseMove, onAddWatched, watched }) {
 		function () {
 			if (!title) return;
 			document.title = `QuickFlick | ${title}`;
+
+			return function () {
+				document.title = "QuickFlick";
+			};
 		},
 		[title]
 	);
