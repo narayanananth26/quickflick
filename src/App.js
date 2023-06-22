@@ -256,6 +256,14 @@ function MovieDetails({ selectedId, onCloseMove, onAddWatched, watched }) {
 		[selectedId]
 	);
 
+	useEffect(
+		function () {
+			if (!title) return;
+			document.title = `QuickFlick | ${title}`;
+		},
+		[title]
+	);
+
 	return (
 		<div className="details">
 			{isLoading ? (
