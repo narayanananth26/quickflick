@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
 
@@ -19,7 +18,6 @@ StarRating.propTypes = {
 	size: PropTypes.number,
 	messages: PropTypes.array,
 	className: PropTypes.string,
-	onSetRating: PropTypes.func,
 };
 
 export default function StarRating({
@@ -29,10 +27,13 @@ export default function StarRating({
 	className = "",
 	messages = [],
 	defaultRating = 0,
-	onSetRating,
 }) {
 	const [rating, setRating] = useState(defaultRating);
-	const [hoverRating, setHoverRating] = useState(0);
+	const [tempRating, setTempRating] = useState(0);
+
+	function handleRating(rating) {
+		setRating(rating);
+	}
 
 	const textStyle = {
 		lineHeight: "1",
@@ -41,11 +42,6 @@ export default function StarRating({
 		fontSize: `${size / 1.5}px`,
 	};
 
-	function handleRating(rating) {
-		setRating(rating);
-		onSetRating(rating);
-	}
-
 	return (
 		<div style={containerStyle} className={className}>
 			<div style={starContainerStyle}>
@@ -53,11 +49,11 @@ export default function StarRating({
 					<Star
 						key={i}
 						full={
-							hoverRating ? hoverRating >= i + 1 : rating >= i + 1
+							tempRating ? tempRating >= i + 1 : rating >= i + 1
 						}
 						onRate={() => handleRating(i + 1)}
-						onHoverIn={() => setHoverRating(i + 1)}
-						onHoverOut={() => setHoverRating(0)}
+						onHoverIn={() => setTempRating(i + 1)}
+						onHoverOut={() => setTempRating(0)}
 						color={color}
 						size={size}
 					/>
@@ -65,8 +61,8 @@ export default function StarRating({
 			</div>
 			<p style={textStyle}>
 				{messages.length === maxRating
-					? messages[hoverRating ? hoverRating - 1 : rating - 1]
-					: hoverRating || rating || ""}
+					? messages[tempRating ? tempRating - 1 : rating - 1]
+					: tempRating || rating || ""}
 			</p>
 		</div>
 	);
